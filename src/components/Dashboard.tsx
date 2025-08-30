@@ -41,11 +41,9 @@ export default function Dashboard() {
   };
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0
-    }).format(value);
+    // Convert to Nitcoin (1 INR = 0.01 Nitcoin)
+    const nitcoinValue = value / 100;
+    return `${nitcoinValue.toFixed(2)} NTC`;
   };
 
   if (loading || budgetLoading) {

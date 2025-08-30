@@ -61,7 +61,7 @@ export function useBudget() {
         setBudget(Number(data.budget_amount));
         toast({
           title: "Welcome to SpaceOut!",
-          description: `Your travel budget of ₹${(initialBudget/100000).toFixed(1)} Lakhs has been allocated.`,
+          description: `Your travel budget of ${(initialBudget/100).toFixed(0)} Nitcoin has been allocated.`,
         });
       }
     } catch (error) {

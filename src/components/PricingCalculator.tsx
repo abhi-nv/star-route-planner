@@ -79,7 +79,9 @@ const PricingCalculator: React.FC = () => {
   };
 
   const formatPrice = (amount: number) => {
-    return `₹${(amount / 100000).toFixed(2)}L`;
+    // Convert to Nitcoin (1 INR = 0.01 Nitcoin)
+    const nitcoinValue = amount / 100;
+    return `${nitcoinValue.toFixed(2)} NTC`;
   };
 
   return (

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { QrCode, Rocket, CreditCard } from "lucide-react";
+import { Rocket, CreditCard } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import paymentQR from "@/assets/payment-qr.png";
 
 interface PaymentGatewayProps {
   amount: number;
@@ -40,11 +41,9 @@ export default function PaymentGateway({ amount, onSuccess }: PaymentGatewayProp
   };
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0
-    }).format(value);
+    // Convert to Nitcoin (1 INR = 0.01 Nitcoin)
+    const nitcoinValue = value / 100;
+    return `${nitcoinValue.toFixed(2)} NTC`;
   };
 
   return (
@@ -111,7 +110,11 @@ export default function PaymentGateway({ amount, onSuccess }: PaymentGatewayProp
             >
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg animate-pulse" />
               <div className="relative bg-white p-4 rounded">
-                <QrCode className="w-full h-full text-black" size={200} />
+                <img 
+                  src={paymentQR} 
+                  alt="Payment QR Code" 
+                  className="w-full h-full object-contain"
+                />
               </div>
             </div>
 
