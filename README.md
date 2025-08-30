@@ -1,5 +1,5 @@
 SPACEOUT is a futuristic interplanetary travel booking platform that allows users to plan and book journeys between planets in our solar system and beyond. Experience the future of space tourism with our intuitive route planning system.
-🌟 Features
+   🌟 Features
 
 Interactive Planet Selection: Choose your departure and destination planets from our solar system
 Route Optimization: Advanced algorithms calculate the most efficient space routes
