@@ -1,10 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Rocket, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { Rocket, Menu, X, LogOut } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
+import { User, Session } from '@supabase/supabase-js';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+      }
+    );
+
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast({
+        title: "Error signing out",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Signed out",
+        description: "Come back soon!",
+      });
+      navigate('/auth');
+    }
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-darker">
@@ -36,8 +78,20 @@ const Navbar: React.FC = () => {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost">Login</Button>
-            <Button variant="glow">Book Now</Button>
+            {user ? (
+              <>
+                <span className="text-foreground/70 text-sm">{user.email}</span>
+                <Button variant="ghost" onClick={handleSignOut}>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <Button variant="glow" onClick={() => navigate('/auth')}>
+                Sign In
+              </Button>
+            )}
+            <Button variant="aurora">Book Now</Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -65,8 +119,20 @@ const Navbar: React.FC = () => {
               Travel Classes
             </a>
             <div className="flex flex-col space-y-2 pt-4">
-              <Button variant="ghost" className="w-full">Login</Button>
-              <Button variant="glow" className="w-full">Book Now</Button>
+              {user ? (
+                <>
+                  <span className="text-foreground/70 text-sm text-center">{user.email}</span>
+                  <Button variant="ghost" className="w-full" onClick={handleSignOut}>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <Button variant="glow" className="w-full" onClick={() => navigate('/auth')}>
+                  Sign In
+                </Button>
+              )}
+              <Button variant="aurora" className="w-full">Book Now</Button>
             </div>
           </div>
         )}
