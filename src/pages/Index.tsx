@@ -6,7 +6,7 @@ import Starfield from '@/components/Starfield';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Destinations from '@/components/Destinations';
-import LaunchWindows from '@/components/LaunchWindows';
+import Dashboard from '@/components/Dashboard';
 import TravelClasses from '@/components/TravelClasses';
 import PricingCalculator from '@/components/PricingCalculator';
 
@@ -22,11 +22,7 @@ const Index = () => {
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        
-        // Redirect to auth if not authenticated
-        if (!session?.user) {
-          navigate('/auth');
-        }
+        setLoading(false);
       }
     );
 
@@ -35,11 +31,6 @@ const Index = () => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
-      
-      // Redirect if not authenticated
-      if (!session?.user) {
-        navigate('/auth');
-      }
     });
 
     return () => subscription.unsubscribe();
@@ -56,13 +47,18 @@ const Index = () => {
     );
   }
 
+  // If user is logged in, show dashboard
+  if (user) {
+    return <Dashboard />;
+  }
+
+  // Otherwise show landing page
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Starfield />
       <Navbar />
       <Hero />
       <Destinations />
-      <LaunchWindows />
       <TravelClasses />
       <PricingCalculator />
       

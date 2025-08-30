@@ -47,11 +47,20 @@ const Hero: React.FC = () => {
           
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button variant="aurora" size="xl" className="group">
+            <Button 
+              variant="aurora" 
+              size="xl" 
+              className="group"
+              onClick={() => window.location.href = '/auth'}
+            >
               Start Your Journey
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button variant="space" size="xl">
+            <Button 
+              variant="space" 
+              size="xl"
+              onClick={() => window.location.href = '/auth'}
+            >
               <Calendar className="mr-2" />
               View Launch Windows
             </Button>
