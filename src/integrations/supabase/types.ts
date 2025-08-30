@@ -14,7 +14,187 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      launch_windows: {
+        Row: {
+          arrival_date: string
+          availability_percentage: number
+          base_price: number
+          created_at: string
+          departure_date: string
+          destination_planet_id: string
+          destination_station_id: string
+          distance: number
+          duration_days: number
+          id: string
+          origin_planet_id: string
+          origin_station_id: string
+          status: string
+        }
+        Insert: {
+          arrival_date: string
+          availability_percentage: number
+          base_price: number
+          created_at?: string
+          departure_date: string
+          destination_planet_id: string
+          destination_station_id: string
+          distance: number
+          duration_days: number
+          id?: string
+          origin_planet_id: string
+          origin_station_id: string
+          status: string
+        }
+        Update: {
+          arrival_date?: string
+          availability_percentage?: number
+          base_price?: number
+          created_at?: string
+          departure_date?: string
+          destination_planet_id?: string
+          destination_station_id?: string
+          distance?: number
+          duration_days?: number
+          id?: string
+          origin_planet_id?: string
+          origin_station_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "launch_windows_destination_planet_id_fkey"
+            columns: ["destination_planet_id"]
+            isOneToOne: false
+            referencedRelation: "planets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "launch_windows_destination_station_id_fkey"
+            columns: ["destination_station_id"]
+            isOneToOne: false
+            referencedRelation: "stations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "launch_windows_origin_planet_id_fkey"
+            columns: ["origin_planet_id"]
+            isOneToOne: false
+            referencedRelation: "planets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "launch_windows_origin_station_id_fkey"
+            columns: ["origin_station_id"]
+            isOneToOne: false
+            referencedRelation: "stations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      planets: {
+        Row: {
+          climate: string | null
+          code: string
+          created_at: string
+          description: string | null
+          distance_from_earth: number
+          gravity: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          climate?: string | null
+          code: string
+          created_at?: string
+          description?: string | null
+          distance_from_earth: number
+          gravity?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          climate?: string | null
+          code?: string
+          created_at?: string
+          description?: string | null
+          distance_from_earth?: number
+          gravity?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      stations: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          name: string
+          planet_id: string
+          type: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name: string
+          planet_id: string
+          type: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          name?: string
+          planet_id?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stations_planet_id_fkey"
+            columns: ["planet_id"]
+            isOneToOne: false
+            referencedRelation: "planets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_budgets: {
+        Row: {
+          budget_amount: number
+          created_at: string
+          currency: string | null
+          email: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          budget_amount?: number
+          created_at?: string
+          currency?: string | null
+          email: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          budget_amount?: number
+          created_at?: string
+          currency?: string | null
+          email?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
